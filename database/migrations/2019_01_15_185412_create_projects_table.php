@@ -14,7 +14,7 @@ class CreateProjectsTable extends Migration
     public function up()
     {
         Schema::create('projects', function (Blueprint $table) {
-            $table->increments('id');
+            $table->unsignedInteger('id');
             $table->integer('category_id');
             $table->string('title');
             $table->string('video_url');
