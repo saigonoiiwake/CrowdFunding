@@ -15,6 +15,8 @@ class CreateEnrollsTable extends Migration
     {
         Schema::create('enrolls', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id');
+            $table->integer('package_id');
             $table->timestamps();
         });
     }
