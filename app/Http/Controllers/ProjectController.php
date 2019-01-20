@@ -19,28 +19,7 @@ class ProjectController extends Controller
             'video_url' => 'https://www.youtube.com/watch?v=B1ci9EhgyCM',
             'owner' => '雞排妹&Hiroshi',
             'funding_target' => '1000000',
-            'packages' => [
-                '1' => [
-                    'id' => 1,
-                    'price' => 1000,
-                    'sold' => 7 
-                ],
-                '2' => [
-                    'id' => 2,
-                    'price' => 3000,
-                    'sold' => 9 
-                ],
-                '3' => [
-                    'id' => 3,
-                    'price' => 7000,
-                    'sold' => 15 
-                ],
-                '4' => [
-                    'id' => 4,
-                    'price' => 49000,
-                    'sold' => 7 
-                ],
-            ],
+            'current_fund' => '240000',
             'start_date' => '2019/2/1',
             'due_date' => '2019/3/10',
         ]);
