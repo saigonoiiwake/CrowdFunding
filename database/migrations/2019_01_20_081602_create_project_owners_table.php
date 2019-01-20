@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProjectUpdatesTable extends Migration
+class CreateOwnersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateProjectUpdatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('project_updates', function (Blueprint $table) {
+        Schema::create('project_owners', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('project_id');
-            $table->string('title');
-            $table->longText('content');
+            $table->unsignedInteger('user_id');
+            $table->integer('package_id');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateProjectUpdatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_updates');
+        Schema::dropIfExists('owners');
     }
 }

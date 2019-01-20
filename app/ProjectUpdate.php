@@ -10,4 +10,9 @@ class ProjectUpdate extends Model
     protected $fillable = [
         'project_id', 'title', 'content'
     ];
+
+    public function project()
+    {
+        return $this->belongsTo('App\Project');
+    }
 }

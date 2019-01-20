@@ -15,7 +15,7 @@ class CreateProjectPackagesTable extends Migration
     {
         Schema::create('project_packages', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('project_id');
+            $table->integer('project_id');
             $table->string('thumbnail_url');
             $table->string('title');
             $table->longText('content');
