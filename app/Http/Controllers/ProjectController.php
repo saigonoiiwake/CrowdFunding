@@ -25,6 +25,24 @@ class ProjectController extends Controller
         ]);
     }
 
+    public function EditSingleProject($project_id)
+    {
+        //07-crowdfunding-sec1
+        
+        return response()->json([
+            'id' => $project_id,
+            'category_id' => '3',
+            'title' => '與雞排妹一起學英文',
+            'video_url' => 'https://www.youtube.com/watch?v=B1ci9EhgyCM',
+            'owner' => '雞排妹&Hiroshi',
+            'funding_target' => '1200000',
+            'current_fund' => '150000',
+            'start_date' => '2019/2/1',
+            'due_date' => '2019/3/15',
+        ]);
+
+    }
+
     public function ListAllPackages($project_id)
     {
         ////07-crowdfunding-sec2
@@ -173,6 +191,118 @@ class ProjectController extends Controller
         ]);
     }
 
+    public function CreateComment($project_id)
+    {
+        // Not sure
+        // 10-crowdfunding-sec4 
+
+         return response()->json([
+            'id' => $project_id,
+            'comments' => [
+                '1' => [
+                    'comment_id' => 7,
+                    'user_id' => 123456789,
+                    'comment' => 'Can I kiss her?',
+                    'created_at' => '2019/2/1 20:00:00',
+                    'updated_at' => '2019/2/1 20:00:00',
+                ]
+            ]
+         ]);
+    }
+
+    public function EditSingleComment($project_id,$comment_id)
+    {
+        // Not sure
+        // 10-crowdfunding-sec4 
+
+         return response()->json([
+            'id' => $project_id,
+            'comments' => [
+                '1' => [
+                    'comment_id' => $comment_id,
+                    'user_id' => 123456789,
+                    'comment' => 'Can I hug her?',
+                    'created_at' => '2019/2/1 20:00:00',
+                    'updated_at' => '2019/2/1 20:00:00',
+                ]
+            ]
+         ]);
+    }
+
+    public function DeletesSingleComment($project_id,$comment_id)
+    {
+        // Not sure
+        // 10-crowdfunding-sec4 
+
+         return response()->json([
+            'id' => $project_id,
+            'comments' => [
+                '1' => [
+                    'comment_id' => $comment_id,
+                    'user_id' => 123456789,
+                    'comment' => 'Can I hug her?',
+                    'created_at' => '2019/2/1 20:00:00',
+                    'updated_at' => '2019/2/1 20:00:00',
+                ],
+            ]
+         ]);
+    }
+
+    public function CreateSingleReply($project_id,$comment_id)
+    {
+        // 10-crowdfunding-sec4 
+
+        return response()->json([
+            'id' => $project_id,
+            'comments' => [
+                '1' => [
+                    'comment_id' => $comment_id,
+                    'user_id' => 123456789,
+                    'comment' => 'Can I hug her?',
+                    'created_at' => '2019/2/1 20:00:00',
+                    'updated_at' => '2019/2/1 20:00:00',
+                    'replies' => [
+                        '1' => [
+                            'reply_id' => 1,
+                            'user_id' => 987654321,
+                            'reply' => 'Yes You can',
+                            'created_at' => '2019/2/1 22:00:00',
+                            'updated_at' => '2019/2/1 22:00:00',
+                        ],
+                    ]
+                ]
+            ]
+         ]);
+    }
+
+    public function EditSingleReply($project_id,$comment_id,$reply_id)
+    {
+        // 10-crowdfunding-sec4 
+
+        return response()->json([
+            'id' => $project_id,
+            'comments' => [
+                '1' => [
+                    'comment_id' => $comment_id,
+                    'user_id' => 123456789,
+                    'comment' => 'Can I hug her?',
+                    'created_at' => '2019/2/1 20:00:00',
+                    'updated_at' => '2019/2/1 20:00:00',
+                    'replies' => [
+                        '1' => [
+                            'reply_id' => $reply_id,
+                            'user_id' => 987654321,
+                            'reply' => 'Yes You can',
+                            'created_at' => '2019/2/1 22:00:00',
+                            'updated_at' => '2019/2/1 22:00:00',
+                        ],
+                    ],
+                ],
+            ]
+         ]);
+    }
+
+
     public function ListAllUpdates($project_id)
     {
         //11-crowdfunding-sec5
@@ -209,6 +339,25 @@ class ProjectController extends Controller
                 ]
             ],
         ]);
+    }
+
+    public function ShowSingleUpdate($project_id,$update_id)
+    {
+         //11-crowdfunding-sec5
+
+         return response()->json([
+            'id' => $project_id,
+            'updates' => [
+                '1' => [
+                    'update_id' => $update_id,
+                    'title' => 'hello world',
+                    'content' => 'hello ili',
+                    'created_at' => '2019/2/1 23:00:00',
+                    'updated_at' => '2019/2/1 23:00:00',
+                ]
+            ]
+        ]);
+
     }
 
     public function ListAllQuestions($project_id)
@@ -250,6 +399,8 @@ class ProjectController extends Controller
         ]);
 
     }
+
+
 
     
 }
