@@ -13,24 +13,23 @@ use App\ProjectPackage;
 use App\ProjectUpdate;
 
 class ProjectController extends Controller
-{
-    //
-    
+{  
 
     public function SingleProjectIntro($project_id)
     {
         //07-crowdfunding-sec1
-        $project = Project::where('id', $project_id)->first();
+        $project = Project::findOrFail($project_id);
 
+        //To-do: project_current_fund is not working well
         $project_current_fund = 1;
 
         foreach ($project->packages as $package)
         {
-            // $project_current_fund += $package->price * $package->sponsor_count;
-            $project_current_fund++;
+            
+            $project_current_fund += $package->price * $package->sponsor_count;
+            
         }
 
-        
         return response()->json([
             'id' => $project->id,
             'category_id' => $project->category_id,
@@ -44,9 +43,16 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function EditSingleProject($project_id)
+    public function EditSingleProject(Request $request, $project_id)
     {
         //07-crowdfunding-sec1
+        //To-do: 
+        //$project = Project::findOrFail($project_id);
+
+        $project = Project::findOrFail($project_id);
+
+
+        $sample->update($request->all());
         
         return response()->json([
             'id' => $project_id,
@@ -64,37 +70,41 @@ class ProjectController extends Controller
 
     public function ListAllPackages($project_id)
     {
-        ////07-crowdfunding-sec2
+        //07-crowdfunding-sec2
+        //To-do: work fine in tinker but not here
+        $project = Project::findOrFail($project_id);
 
-        return response()->json([
-                    'id' => $project_id,
-                    'packages' => [
-                        '1' => [
-                            'id' => 1,
-                            'price' => 1000,
-                            'sold' => 7,
-                            'content' => 'kiss'
-                        ],
-                        '2' => [
-                            'id' => 2,
-                            'price' => 3000,
-                            'sold' => 9,
-                            'content' => 'kiss'
-                        ],
-                        '3' => [
-                            'id' => 3,
-                            'price' => 7000,
-                            'sold' => 15,
-                            'content' => 'kiss'
-                        ],
-                        '4' => [
-                            'id' => 4,
-                            'price' => 49000,
-                            'sold' => 7,
-                            'content' => 'kiss'
-                        ],
-                    ],
-                ]);
+        return $project->packages->toJson();
+
+        // return response()->json([
+        //             'id' => $project_id,
+        //             'packages' => [
+        //                 '1' => [
+        //                     'id' => 1,
+        //                     'price' => 1000,
+        //                     'sold' => 7,
+        //                     'content' => 'kiss'
+        //                 ],
+        //                 '2' => [
+        //                     'id' => 2,
+        //                     'price' => 3000,
+        //                     'sold' => 9,
+        //                     'content' => 'kiss'
+        //                 ],
+        //                 '3' => [
+        //                     'id' => 3,
+        //                     'price' => 7000,
+        //                     'sold' => 15,
+        //                     'content' => 'kiss'
+        //                 ],
+        //                 '4' => [
+        //                     'id' => 4,
+        //                     'price' => 49000,
+        //                     'sold' => 7,
+        //                     'content' => 'kiss'
+        //                 ],
+        //             ],
+        //         ]);
     }
 
     public function RetrieveContent($project_id)
