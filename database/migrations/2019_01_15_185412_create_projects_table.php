@@ -22,7 +22,7 @@ class CreateProjectsTable extends Migration
             $table->string('description');
             $table->integer('funding_target');
             $table->timestamp('start_date');
-            $table->timestamp('end_date');
+            $table->timestamp('end_date')->nullable();
             $table->longText('content');
             $table->timestamps();
         });

@@ -39,4 +39,3 @@ Route::get('projects/{project_id}/questions', 'ProjectController@ListAllQuestion
 
 Route::get('account/projects', 'MyPageController@ListAllPackages');
 Route::put('account', 'MyPageController@EditAccount');
-Route::delete('account', 'MyPageController@DeleteAccount');

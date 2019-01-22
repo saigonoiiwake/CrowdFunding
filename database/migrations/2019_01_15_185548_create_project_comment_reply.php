@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProjectUpdatesTable extends Migration
+class CreateProjectCommentReply extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateProjectUpdatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('project_updates', function (Blueprint $table) {
+        Schema::create('project_comment_reply', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('project_id');
-            $table->string('title');
-            $table->longText('content');
+            $table->integer('comment_id');
+            $table->unsignedInteger('user_id');
+            $table->string('reply');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateProjectUpdatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_updates');
+        Schema::dropIfExists('project_comment_reply');
     }
 }

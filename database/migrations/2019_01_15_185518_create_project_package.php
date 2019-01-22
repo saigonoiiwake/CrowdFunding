@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProjectPackagesTable extends Migration
+class CreateProjectPackage extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateProjectPackagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('project_packages', function (Blueprint $table) {
+        Schema::create('project_package', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('project_id');
             $table->string('thumbnail_url');
@@ -35,6 +35,6 @@ class CreateProjectPackagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_packages');
+        Schema::dropIfExists('project_package');
     }
 }
