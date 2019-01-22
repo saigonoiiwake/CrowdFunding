@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -15,8 +16,15 @@ class User extends Authenticatable
      *
      * @var array
      */
+
+    protected $table = 'user';
+
+    // Disable auto increment `id` field
+    public $incrementing = false;
+
+
     protected $fillable = [
-        'name', 'nick_name', 'email', 'password', 'avatar', 'about_me'
+        'id', 'name', 'nick_name', 'email', 'password', 'avatar', 'about_me'
     ];
 
     /**
@@ -52,4 +60,57 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\CommentReply');
     }
+
+    public static function newUser($param)
+    {
+        // Mail::to($param['email'])
+        //       ->bcc('b816132@gmail.com')
+        //       ->send(new \App\Mail\RegisterSuccessful());
+        
+        return parent::create([
+            'id'        => self::generateIdSafe(),
+            'name' => $param['name'],
+            'nick_name' => $param['nick_name'],
+            'avatar'    => isset($param['avatar'])?  $param['avatar'] : "https://res.cloudinary.com/sabina123/image/upload/v1533396487/%E8%8F%AF%E5%A4%A7%E9%A0%AD.jpg",
+            'email'     => $param['email'],
+            'password'  => bcrypt($param['password']),
+            'about_me'  => $param['about_me']
+        ]);
+    }
+
+    /**
+     * generate 10 digit ID
+     *
+     * @return int
+     */
+    public static function generateId()
+    {
+        return (int)mt_rand(100000000, 999999999);
+    }
+
+    /**
+     * generate 10 digit no duplicated ID
+     *
+     * @param int $retry
+     * @return int
+     * @throws
+     */
+    public static function generateIdSafe($retry = 15)
+    {
+        if ($retry <= 0) {
+            // TODO: find the proper exception when ID can't be generate
+            throw new ModelNotFoundException();
+        }
+        $id = self::generateId();
+        try {
+            self::query()
+                ->where('id', '=',$id)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $id;
+        }
+        // "[DuplicationUserId] {$id}"
+        return self::generateIdSafe($retry - 1);
+    }
+
 }
