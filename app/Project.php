@@ -32,7 +32,7 @@ class Project extends Model
 
     public function packages()
     {
-        return $this->hasMany('App\ProjectPackage');
+        return $this->hasMany('App\ProjectPackage', 'project_id', 'id');
     }
 
     public function owners()

@@ -3,25 +3,44 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Project;
+use App\ProjectCategory;
+use App\ProjectComment;
+use App\ProjectCommentReply;
+use App\ProjectOwner;
+use App\ProjectPackage;
+use App\ProjectUpdate;
 
 class ProjectController extends Controller
 {
     //
+    
 
     public function SingleProjectIntro($project_id)
     {
         //07-crowdfunding-sec1
+        $project = Project::where('id', $project_id)->first();
+
+        $project_current_fund = 1;
+
+        foreach ($project->packages as $package)
+        {
+            // $project_current_fund += $package->price * $package->sponsor_count;
+            $project_current_fund++;
+        }
+
         
         return response()->json([
-            'id' => $project_id,
-            'category_id' => '3',
-            'title' => '與雞排妹一起學日文',
-            'video_url' => 'https://www.youtube.com/watch?v=B1ci9EhgyCM',
-            'owner' => '雞排妹&Hiroshi',
-            'funding_target' => '1000000',
-            'current_fund' => '240000',
-            'start_date' => '2019/2/1',
-            'due_date' => '2019/3/10',
+            'id' => $project->id,
+            'category_id' => $project->category_id,
+            'title' => $project->title,
+            'video_url' => $project->video_url,
+            'owner' => $project->owners,
+            'funding_target' => $project->funding_target,
+            'current_fund' => $project_current_fund,
+            'start_date' => $project->start_date,
+            'due_date' => $project->end_date,
         ]);
     }
 
