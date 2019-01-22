@@ -3,10 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Project extends Model
 {
     //
+    protected $table = 'project';
+
     protected $fillable = [
         'category_id', 'title', 'video_url', 'description',
         'funding_target', 'start_date', 'end_date', 'content'
@@ -19,7 +22,7 @@ class Project extends Model
 
     public function comments()
     {
-        return $this->hasMany('App\Comment');
+        return $this->hasMany('App\ProjectComment');
     }
 
     public function updates()
