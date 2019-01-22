@@ -13,8 +13,8 @@ class CreateProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('projects', function (Blueprint $table) {
-            $table->integer('id');
+        Schema::create('project', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('category_id');
             $table->string('title');
             $table->string('video_url');
@@ -35,6 +35,6 @@ class CreateProjectsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('project');
     }
 }

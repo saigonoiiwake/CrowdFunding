@@ -16,7 +16,7 @@ class CreateProjectOwner extends Migration
         Schema::create('project_owner', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->integer('package_id');
+            $table->integer('project_id');
             $table->timestamps();
         });
     }
