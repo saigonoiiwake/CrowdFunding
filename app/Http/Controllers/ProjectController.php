@@ -29,17 +29,20 @@ class ProjectController extends Controller
             
         }
 
+        $data = json_decode($project, true);
+        $arr_item['project_current_fund'] = $project_current_fund;
+        array_push( $data, $arr_item );
+        
         return response()->json([
             'status' => 'success',
-            'current_fund' =>$project_current_fund,
-            'data' => $project
+            'data' => $data
         ]);
     }
 
     public function EditSingleProject(Request $request, $project_id)
     {
         //07-crowdfunding-sec1
-        //To-do: 
+        //To-do: not yet
         //$project = Project::findOrFail($project_id);
 
         $project = Project::findOrFail($project_id);
@@ -64,21 +67,25 @@ class ProjectController extends Controller
     public function ListAllPackages($project_id)
     {
         //07-crowdfunding-sec2
-        //To-do: 格式未統一
         $project = Project::findOrFail($project_id);
 
-        return $project->packages()->get()->toJson(JSON_PRETTY_PRINT);
+        return response()->json([
+            'status' => 'success',
+            'data' => $project->packages
+        ]);
 
     }
 
     public function RetrieveContent($project_id)
     {
         //09-crowdfunding-sec3
-        //To-do: WYSIWYG
 
         $project = Project::findOrFail($project_id);
 
-        return $project->content;
+        return response()->json([
+            'status' => 'success',
+            'data' => $project->content
+        ]);
 
     }
     
@@ -86,108 +93,30 @@ class ProjectController extends Controller
     {
         //10-crowdfunding-sec4
 
+        $project = Project::findOrFail($project_id);
+
+        //$pcomments = json_decode($project->comments, true);
+        
+
+        $data = [];
+
+        foreach ($project->comments as $comment)
+        {
+            $arry = json_decode($comment, true);
+            array_push( $arry, $comment->replies );
+            array_push( $data, $arry );
+        }
+
         return response()->json([
-            'id' => $project_id,
-            'comments' => [
-                '1' => [
-                    'comment_id' => 1,
-                    'user_id' => 123456789,
-                    'comment' => 'Can I kiss her?',
-                    'created_at' => '2019/2/1 20:00:00',
-                    'updated_at' => '2019/2/1 20:00:00',
-                    'replies' => [
-                        '1' => [
-                            'reply_id' => 1,
-                            'user_id' => 987654321,
-                            'reply' => 'Yes You can',
-                            'created_at' => '2019/2/1 22:00:00',
-                            'updated_at' => '2019/2/1 22:00:00',
-                        ],
-                        '2' => [
-                            'reply_id' => 2,
-                            'user_id' => 123456789,
-                            'reply' => 'Can I >///< ??',
-                            'created_at' => '2019/2/1 23:00:00',
-                            'updated_at' => '2019/2/1 23:00:00',
-                        ],
-                    ]
-                ],
-                '2' => [
-                    'comment_id' => 2,
-                    'user_id' => 987654321,
-                    'comment' => 'Can I kiss her?',
-                    'created_at' => '2019/2/1 20:00:00',
-                    'updated_at' => '2019/2/1 20:00:00',
-                    'replies' => [
-                        '1' => [
-                            'reply_id' => 1,
-                            'user_id' => 987654321,
-                            'reply' => 'Yes You can',
-                            'created_at' => '2019/2/1 22:00:00',
-                            'updated_at' => '2019/2/1 22:00:00',
-                        ],
-                        '2' => [
-                            'reply_id' => 2,
-                            'user_id' => 123456789,
-                            'reply' => 'Can I >///< ??',
-                            'created_at' => '2019/2/1 23:00:00',
-                            'updated_at' => '2019/2/1 23:00:00',
-                        ],
-                    ]
-                ],
-                '3' => [
-                    'comment_id' => 3,
-                    'user_id' => 223344556,
-                    'comment' => 'Can I kiss her?',
-                    'created_at' => '2019/2/1 20:00:00',
-                    'updated_at' => '2019/2/1 20:00:00',
-                    'replies' => [
-                        '1' => [
-                            'reply_id' => 1,
-                            'user_id' => 987654321,
-                            'reply' => 'Yes You can',
-                            'created_at' => '2019/2/1 22:00:00',
-                            'updated_at' => '2019/2/1 22:00:00',
-                        ],
-                        '2' => [
-                            'reply_id' => 2,
-                            'user_id' => 123456789,
-                            'reply' => 'Can I >///< ??',
-                            'created_at' => '2019/2/1 23:00:00',
-                            'updated_at' => '2019/2/1 23:00:00',
-                        ],
-                    ]
-                ],
-                '4' => [
-                    'comment_id' => 4,
-                    'user_id' => 112233445,
-                    'comment' => 'Can I kiss her?',
-                    'created_at' => '2019/2/1 20:00:00',
-                    'updated_at' => '2019/2/1 20:00:00',
-                    'replies' => [
-                        '1' => [
-                            'reply_id' => 1,
-                            'user_id' => 987654321,
-                            'reply' => 'Yes You can',
-                            'created_at' => '2019/2/1 22:00:00',
-                            'updated_at' => '2019/2/1 22:00:00',
-                        ],
-                        '2' => [
-                            'reply_id' => 2,
-                            'user_id' => 123456789,
-                            'reply' => 'Can I >///< ??',
-                            'created_at' => '2019/2/1 23:00:00',
-                            'updated_at' => '2019/2/1 23:00:00',
-                        ],
-                    ]
-                ],
-            ],
+            'status' => 'success',
+            'data' => $data
         ]);
+
     }
 
     public function CreateComment($project_id)
     {
-        // Not sure
+        // To-do
         // 10-crowdfunding-sec4 
 
          return response()->json([
@@ -206,7 +135,7 @@ class ProjectController extends Controller
 
     public function EditSingleComment($project_id,$comment_id)
     {
-        // Not sure
+        // To-do
         // 10-crowdfunding-sec4 
 
          return response()->json([
@@ -225,7 +154,7 @@ class ProjectController extends Controller
 
     public function DeletesSingleComment($project_id,$comment_id)
     {
-        // Not sure
+        // To-do
         // 10-crowdfunding-sec4 
 
          return response()->json([
@@ -244,7 +173,7 @@ class ProjectController extends Controller
 
     public function CreateSingleReply($project_id,$comment_id)
     {
-        // 10-crowdfunding-sec4 
+        // To-do
 
         return response()->json([
             'id' => $project_id,
@@ -271,7 +200,7 @@ class ProjectController extends Controller
 
     public function EditSingleReply($project_id,$comment_id,$reply_id)
     {
-        // 10-crowdfunding-sec4 
+        // To-do
 
         return response()->json([
             'id' => $project_id,
@@ -299,57 +228,26 @@ class ProjectController extends Controller
 
     public function ListAllUpdates($project_id)
     {
-        //11-crowdfunding-sec5
+        
+        $project = Project::findOrFail($project_id);
+
         return response()->json([
-            'id' => $project_id,
-            'updates' => [
-                '1' => [
-                    'update_id' => 1,
-                    'title' => 'hello world',
-                    'content' => 'hello ili',
-                    'created_at' => '2019/2/1 23:00:00',
-                    'updated_at' => '2019/2/1 23:00:00',
-                ],
-                '2' => [
-                    'update_id' => 1,
-                    'title' => 'hello world',
-                    'content' => 'hello ili',
-                    'created_at' => '2019/2/1 23:00:00',
-                    'updated_at' => '2019/2/1 23:00:00',
-                ],
-                '3' => [
-                    'update_id' => 1,
-                    'title' => 'hello world',
-                    'content' => 'hello ili',
-                    'created_at' => '2019/2/1 23:00:00',
-                    'updated_at' => '2019/2/1 23:00:00',
-                ],
-                '4' => [
-                    'update_id' => 1,
-                    'title' => 'hello world',
-                    'content' => 'hello ili',
-                    'created_at' => '2019/2/1 23:00:00',
-                    'updated_at' => '2019/2/1 23:00:00',
-                ]
-            ],
+            'status' => 'success',
+            'data' => $project->updates
         ]);
+
+        
     }
 
     public function ShowSingleUpdate($project_id,$update_id)
     {
          //11-crowdfunding-sec5
 
+         $update = ProjectUpdate::findOrFail($update_id);
+
          return response()->json([
-            'id' => $project_id,
-            'updates' => [
-                '1' => [
-                    'update_id' => $update_id,
-                    'title' => 'hello world',
-                    'content' => 'hello ili',
-                    'created_at' => '2019/2/1 23:00:00',
-                    'updated_at' => '2019/2/1 23:00:00',
-                ]
-            ]
+            'status' => 'success',
+            'data' => $update
         ]);
 
     }
