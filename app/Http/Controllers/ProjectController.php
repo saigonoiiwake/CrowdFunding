@@ -20,7 +20,6 @@ class ProjectController extends Controller
         //07-crowdfunding-sec1
         $project = Project::findOrFail($project_id);
 
-        //To-do: project_current_fund is not working well
         $project_current_fund = 1;
 
         foreach ($project->packages as $package)
@@ -31,15 +30,9 @@ class ProjectController extends Controller
         }
 
         return response()->json([
-            'id' => $project->id,
-            'category_id' => $project->category_id,
-            'title' => $project->title,
-            'video_url' => $project->video_url,
-            'owner' => $project->owners,
-            'funding_target' => $project->funding_target,
-            'current_fund' => $project_current_fund,
-            'start_date' => $project->start_date,
-            'due_date' => $project->end_date,
+            'status' => 'success',
+            'current_fund' =>$project_current_fund,
+            'data' => $project
         ]);
     }
 
@@ -71,50 +64,22 @@ class ProjectController extends Controller
     public function ListAllPackages($project_id)
     {
         //07-crowdfunding-sec2
-        //To-do: work fine in tinker but not here
+        //To-do: 格式未統一
         $project = Project::findOrFail($project_id);
 
-        return $project->packages->toJson();
+        return $project->packages()->get()->toJson(JSON_PRETTY_PRINT);
 
-        // return response()->json([
-        //             'id' => $project_id,
-        //             'packages' => [
-        //                 '1' => [
-        //                     'id' => 1,
-        //                     'price' => 1000,
-        //                     'sold' => 7,
-        //                     'content' => 'kiss'
-        //                 ],
-        //                 '2' => [
-        //                     'id' => 2,
-        //                     'price' => 3000,
-        //                     'sold' => 9,
-        //                     'content' => 'kiss'
-        //                 ],
-        //                 '3' => [
-        //                     'id' => 3,
-        //                     'price' => 7000,
-        //                     'sold' => 15,
-        //                     'content' => 'kiss'
-        //                 ],
-        //                 '4' => [
-        //                     'id' => 4,
-        //                     'price' => 49000,
-        //                     'sold' => 7,
-        //                     'content' => 'kiss'
-        //                 ],
-        //             ],
-        //         ]);
     }
 
     public function RetrieveContent($project_id)
     {
         //09-crowdfunding-sec3
+        //To-do: WYSIWYG
 
-        return response()->json([
-            'id' => $project_id,
-            'content' => 'medium_text'
-        ]);
+        $project = Project::findOrFail($project_id);
+
+        return $project->content;
+
     }
     
     public function ListAllComments($project_id)
