@@ -27,6 +27,6 @@ class ProjectComment extends Model
 
     public function replies()
     {
-        return $this->hasMany('App\ProjectCommentReply');
+        return $this->hasMany('App\ProjectCommentReply', 'comment_id', 'id');
     }
 }

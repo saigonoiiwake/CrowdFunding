@@ -25,6 +25,14 @@ class Project extends Model
         return $this->hasMany('App\ProjectComment');
     }
 
+    /**
+     * retrieves all replies through ProjectComment table
+     */
+    public function replies()
+    {
+        return $this->hasManyThrough('App\ProjectCommentReply', 'App\ProjectComment', 'project_id', 'comment_id');
+    }
+
     public function updates()
     {
         return $this->hasMany('App\ProjectUpdate');
@@ -44,4 +52,5 @@ class Project extends Model
     {
         return $this->belongsToMany('App\User', 'project_enrolls', 'project_id', 'user_id');
     }
+
 }

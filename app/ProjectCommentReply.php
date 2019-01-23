@@ -16,7 +16,7 @@ class ProjectCommentReply extends Model
 
     public function comment()
     {
-        return $this->belongsTo('App\Comment');
+        return $this->belongsTo('App\Comment', 'comment_id', 'id');
     }
 
     public function speaker()
