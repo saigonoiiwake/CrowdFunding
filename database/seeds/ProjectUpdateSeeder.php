@@ -14,7 +14,7 @@ class ProjectUpdateSeeder extends Seeder
     {
         //
         DB::table('project_update')->insert([
-            'project_id'       => 42996400,
+            'project_id'       => 1,
             'title'            => 'fefweew wfefewfwe fwefwefwef',
             'content'          => 'fefweew wfefewfwe fwefwefwef',
             'created_at'       => now(),
