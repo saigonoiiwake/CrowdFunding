@@ -38,6 +38,11 @@ class Project extends Model
         return $this->hasMany('App\ProjectUpdate');
     }
 
+    public function questions()
+    {
+        return $this->hasMany('App\ProjectQuestion');
+    }
+
     public function packages()
     {
         return $this->hasMany('App\ProjectPackage', 'project_id', 'id');
