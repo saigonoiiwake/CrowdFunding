@@ -42,7 +42,7 @@ class ProjectController extends Controller
     public function EditSingleProject(Request $request, $project_id)
     {
         //07-crowdfunding-sec1
-        //To-do: not yet
+        //To-do: admin
         //$project = Project::findOrFail($project_id);
 
         $project = Project::findOrFail($project_id);
@@ -116,7 +116,7 @@ class ProjectController extends Controller
 
     public function CreateComment($project_id)
     {
-        // To-do
+        // To-do: auth
         // 10-crowdfunding-sec4 
 
          return response()->json([
@@ -135,7 +135,7 @@ class ProjectController extends Controller
 
     public function EditSingleComment($project_id,$comment_id)
     {
-        // To-do
+        // To-do: auth
         // 10-crowdfunding-sec4 
 
          return response()->json([
@@ -154,7 +154,7 @@ class ProjectController extends Controller
 
     public function DeletesSingleComment($project_id,$comment_id)
     {
-        // To-do
+        // To-do: auth
         // 10-crowdfunding-sec4 
 
          return response()->json([
@@ -173,7 +173,7 @@ class ProjectController extends Controller
 
     public function CreateSingleReply($project_id,$comment_id)
     {
-        // To-do
+        // To-do: auth
 
         return response()->json([
             'id' => $project_id,
@@ -200,7 +200,7 @@ class ProjectController extends Controller
 
     public function EditSingleReply($project_id,$comment_id,$reply_id)
     {
-        // To-do
+        // To-do: auth
 
         return response()->json([
             'id' => $project_id,
@@ -255,41 +255,12 @@ class ProjectController extends Controller
     public function ListAllQuestions($project_id)
     {
         //11-crowdfunding-sec6
+        $project = Project::findOrFail($project_id);
 
         return response()->json([
-            'id' => $project_id,
-            'questions' => [
-                '1' => [
-                    'question_id' => 1,
-                    'question' => 'how are you?',
-                    'reply' => 'I am fine thank you and you.',
-                    'created_at' => '2019/2/1 23:00:00',
-                    'updated_at' => '2019/2/1 23:00:00',
-                ],
-                '2' => [
-                    'question_id' => 2,
-                    'question' => 'how are you?',
-                    'reply' => 'I am fine thank you and you.',
-                    'created_at' => '2019/2/1 23:00:00',
-                    'updated_at' => '2019/2/1 23:00:00',
-                ],
-                '3' => [
-                    'question_id' => 3,
-                    'question' => 'how are you?',
-                    'reply' => 'I am fine thank you and you.',
-                    'created_at' => '2019/2/1 23:00:00',
-                    'updated_at' => '2019/2/1 23:00:00',
-                ],
-                '4' => [
-                    'question_id' => 4,
-                    'question' => 'how are you?',
-                    'reply' => 'I am fine thank you and you.',
-                    'created_at' => '2019/2/1 23:00:00',
-                    'updated_at' => '2019/2/1 23:00:00',
-                ]
-            ],
+            'status' => 'success',
+            'data' => $project->questions
         ]);
-
     }
 
 
