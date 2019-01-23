@@ -39,4 +39,5 @@ Route::put('projects/{project_id}/comments/{comment_id}/replies/{reply_id}', 'Pr
 
 // To-do: auth
 Route::get('account/projects', 'MyPageController@ListAllPackages');
+Route::put('account/about', 'MyPageController@EditAbout');
 Route::put('account', 'MyPageController@EditAccount');

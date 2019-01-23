@@ -43,7 +43,7 @@ class User extends Authenticatable
 
     public function sponsor_history()
     {
-        return $this->belongsToMany('App\ProjectPackage', 'project_enrolls', 'user_id', 'package_id');
+        return $this->belongsToMany('App\ProjectPackage', 'project_enroll', 'user_id', 'package_id');
     }
 
     public function transaction_history()
