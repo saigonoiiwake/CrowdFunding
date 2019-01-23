@@ -18,15 +18,14 @@ class ProjectController extends Controller
     public function SingleProjectIntro($project_id)
     {
         //07-crowdfunding-sec1
+
         $project = Project::findOrFail($project_id);
 
         $project_current_fund = 1;
 
         foreach ($project->packages as $package)
         {
-            
             $project_current_fund += $package->price * $package->sponsor_count;
-            
         }
 
         $data = json_decode($project, true);
@@ -42,24 +41,21 @@ class ProjectController extends Controller
     public function EditSingleProject(Request $request, $project_id)
     {
         //07-crowdfunding-sec1
-        //To-do: admin
-        //$project = Project::findOrFail($project_id);
+
+        $this->validate($request, [
+            'category_id' => 'required|integer',
+            'title' => 'required',
+            'owners' => 'required|integer',
+            'video_url' => 'required|active_url',
+            'funding_target' => 'required|integer'
+          ]);    
 
         $project = Project::findOrFail($project_id);
+        $project->update($request->all());
 
-
-        $sample->update($request->all());
-        
         return response()->json([
-            'id' => $project_id,
-            'category_id' => '3',
-            'title' => '與雞排妹一起學英文',
-            'video_url' => 'https://www.youtube.com/watch?v=B1ci9EhgyCM',
-            'owner' => '雞排妹&Hiroshi',
-            'funding_target' => '1200000',
-            'current_fund' => '150000',
-            'start_date' => '2019/2/1',
-            'due_date' => '2019/3/15',
+            'status' => 'success',
+            'data' => $project
         ]);
 
     }
@@ -67,6 +63,7 @@ class ProjectController extends Controller
     public function ListAllPackages($project_id)
     {
         //07-crowdfunding-sec2
+
         $project = Project::findOrFail($project_id);
 
         return response()->json([
@@ -95,9 +92,6 @@ class ProjectController extends Controller
 
         $project = Project::findOrFail($project_id);
 
-        //$pcomments = json_decode($project->comments, true);
-        
-
         $data = [];
 
         foreach ($project->comments as $comment)
@@ -114,115 +108,82 @@ class ProjectController extends Controller
 
     }
 
-    public function CreateComment($project_id)
+    public function CreateComment(Request $request, $project_id)
     {
-        // To-do: auth
         // 10-crowdfunding-sec4 
+        
+        $this->validate($request, [
+            'user_id' => 'required|integer',
+            'project_id' => 'required|integer',
+            'comment' => 'required'
+          ]);    
 
-         return response()->json([
-            'id' => $project_id,
-            'comments' => [
-                '1' => [
-                    'comment_id' => 7,
-                    'user_id' => 123456789,
-                    'comment' => 'Can I kiss her?',
-                    'created_at' => '2019/2/1 20:00:00',
-                    'updated_at' => '2019/2/1 20:00:00',
-                ]
-            ]
-         ]);
+        return ProjectComment::create($request->all());
+
     }
 
-    public function EditSingleComment($project_id,$comment_id)
+    public function EditSingleComment(Request $request, $project_id ,$comment_id)
     {
-        // To-do: auth
         // 10-crowdfunding-sec4 
 
-         return response()->json([
-            'id' => $project_id,
-            'comments' => [
-                '1' => [
-                    'comment_id' => $comment_id,
-                    'user_id' => 123456789,
-                    'comment' => 'Can I hug her?',
-                    'created_at' => '2019/2/1 20:00:00',
-                    'updated_at' => '2019/2/1 20:00:00',
-                ]
-            ]
-         ]);
-    }
+        $this->validate($request, [
+            'comment' => 'required'
+          ]);    
 
-    public function DeletesSingleComment($project_id,$comment_id)
-    {
-        // To-do: auth
-        // 10-crowdfunding-sec4 
-
-         return response()->json([
-            'id' => $project_id,
-            'comments' => [
-                '1' => [
-                    'comment_id' => $comment_id,
-                    'user_id' => 123456789,
-                    'comment' => 'Can I hug her?',
-                    'created_at' => '2019/2/1 20:00:00',
-                    'updated_at' => '2019/2/1 20:00:00',
-                ],
-            ]
-         ]);
-    }
-
-    public function CreateSingleReply($project_id,$comment_id)
-    {
-        // To-do: auth
+        $comment = ProjectComment::findOrFail($comment_id);
+        $comment->update($request->all());
 
         return response()->json([
-            'id' => $project_id,
-            'comments' => [
-                '1' => [
-                    'comment_id' => $comment_id,
-                    'user_id' => 123456789,
-                    'comment' => 'Can I hug her?',
-                    'created_at' => '2019/2/1 20:00:00',
-                    'updated_at' => '2019/2/1 20:00:00',
-                    'replies' => [
-                        '1' => [
-                            'reply_id' => 1,
-                            'user_id' => 987654321,
-                            'reply' => 'Yes You can',
-                            'created_at' => '2019/2/1 22:00:00',
-                            'updated_at' => '2019/2/1 22:00:00',
-                        ],
-                    ]
-                ]
-            ]
-         ]);
+            'status' => 'success',
+            'data' => $comment
+        ]);
+
     }
 
-    public function EditSingleReply($project_id,$comment_id,$reply_id)
+    public function DeletesSingleComment(Request $request, $project_id ,$comment_id)
+    {
+        // 10-crowdfunding-sec4 
+
+        $comment = ProjectComment::findOrFail($comment_id);
+        $comment->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $comment
+        ]);
+
+    }
+
+    public function CreateSingleReply(Request $request, $project_id, $comment_id)
+    {
+        // 10-crowdfunding-sec4 
+
+        $this->validate($request, [
+            'user_id' => 'required|integer',
+            'comment_id' => 'required|integer',
+            'reply' => 'required'
+          ]);    
+
+        return ProjectCommentReply::create($request->all());
+
+    }
+
+    public function EditSingleReply(Request $request, $project_id, $comment_id, $reply_id)
     {
         // To-do: auth
 
+        $this->validate($request, [
+            'reply' => 'required'
+          ]);    
+
+        $reply = ProjectCommentReply::findOrFail($reply_id);
+        $reply->update($request->all());
+
         return response()->json([
-            'id' => $project_id,
-            'comments' => [
-                '1' => [
-                    'comment_id' => $comment_id,
-                    'user_id' => 123456789,
-                    'comment' => 'Can I hug her?',
-                    'created_at' => '2019/2/1 20:00:00',
-                    'updated_at' => '2019/2/1 20:00:00',
-                    'replies' => [
-                        '1' => [
-                            'reply_id' => $reply_id,
-                            'user_id' => 987654321,
-                            'reply' => 'Yes You can',
-                            'created_at' => '2019/2/1 22:00:00',
-                            'updated_at' => '2019/2/1 22:00:00',
-                        ],
-                    ],
-                ],
-            ]
-         ]);
+            'status' => 'success',
+            'data' => $reply
+        ]);
+
     }
 
 
