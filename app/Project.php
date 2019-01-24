@@ -50,12 +50,12 @@ class Project extends Model
 
     public function owners()
     {
-        return $this->belongsToMany('App\User', 'project_owners', 'project_id', 'user_id');
+        return $this->belongsToMany('App\User', 'project_owner', 'project_id', 'user_id');
     }
 
     public function sponsors()
     {
-        return $this->belongsToMany('App\User', 'project_enrolls', 'project_id', 'user_id');
+        return $this->belongsToMany('App\User', 'project_enroll', 'project_id', 'user_id');
     }
 
 }
