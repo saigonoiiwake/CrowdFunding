@@ -24,13 +24,13 @@ Route::get('projects/{project_id}/content', 'ProjectController@RetrieveContent')
 Route::get('projects/{project_id}/updates', 'ProjectController@ListAllUpdates');
 Route::get('projects/{project_id}/updates/{update_id}', 'ProjectController@ShowSingleUpdate');
 Route::get('projects/{project_id}/questions', 'ProjectController@ListAllQuestions');
+Route::get('projects/{project_id}/comments', 'ProjectController@ListAllComments');
 
 
 // To-do: admin
 Route::put('projects/{project_id}', 'ProjectController@EditSingleProject');
 
 // To-do: auth
-Route::get('projects/{project_id}/comments', 'ProjectController@ListAllComments');
 Route::post('projects/{project_id}/comments', 'ProjectController@CreateComment');
 Route::put('projects/{project_id}/comments/{comment_id}', 'ProjectController@EditSingleComment');
 Route::delete('projects/{project_id}/comments/{comment_id}', 'ProjectController@DeletesSingleComment');
