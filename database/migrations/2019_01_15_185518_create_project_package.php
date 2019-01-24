@@ -23,7 +23,7 @@ class CreateProjectPackage extends Migration
             $table->unsignedInteger('quantity');
             $table->unsignedInteger('sponsor_count');
             $table->string('require_info');
-            $table->timestamp('end_date');
+            $table->date('end_date');
             $table->timestamps();
         });
     }

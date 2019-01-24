@@ -21,8 +21,8 @@ class CreateProjectTable extends Migration
             $table->integer('owners');
             $table->string('description');
             $table->integer('funding_target');
-            $table->timestamp('start_date');
-            $table->timestamp('end_date')->nullable();
+            $table->date('start_date');
+            $table->date('end_date');
             $table->longText('content');
             $table->timestamps();
         });

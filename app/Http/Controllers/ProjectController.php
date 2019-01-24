@@ -21,15 +21,24 @@ class ProjectController extends Controller
 
         $project = Project::findOrFail($project_id);
 
+        $project_owner = $project->owners()->get();
+
         $project_current_fund = 0;
+
+        $sponsor_sum = 0;
 
         foreach ($project->packages as $package)
         {
             $project_current_fund += $package->price * $package->sponsor_count;
+            $sponsor_sum += $package->sponsor_count;
         }
 
+        $project_current_fund_format = number_format($project_current_fund);
+
         $data = json_decode($project, true);
-        $data['project_current_fund'] = $project_current_fund;
+        $data['project_current_fund'] = $project_current_fund_format;
+        $data['sponsor_sum'] = $sponsor_sum;
+        $data['project_owner'] = $project_owner;
 
         return response()->json([
             'status' => 'success',
