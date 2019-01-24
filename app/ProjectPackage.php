@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class ProjectPackage extends Model
 {
     //
+    protected $table = 'project_package';
+
     protected $fillable = [
         'project_id', 'thumbnail_url', 'title', 'content', 'price', 'quantity',
         'sponsor_count', 'require_info', 'end_date'
@@ -14,7 +16,7 @@ class ProjectPackage extends Model
 
     public function project()
     {
-        return $this->belongsTo('App\Project');
+        return $this->belongsTo('App\Project', 'project_id', 'id');
     }
 
     public function sponsors()

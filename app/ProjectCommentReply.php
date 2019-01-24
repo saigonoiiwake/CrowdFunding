@@ -3,17 +3,20 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class CommentReply extends Model
+class ProjectCommentReply extends Model
 {
     //
+    protected $table = 'project_comment_reply';
+
     protected $fillable = [
         'comment_id', 'user_id', 'reply'
     ];
 
     public function comment()
     {
-        return $this->belongsTo('App\Comment');
+        return $this->belongsTo('App\Comment', 'comment_id', 'id');
     }
 
     public function speaker()

@@ -4,13 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProjectUpdate extends Model
+class ProjectQuestion extends Model
 {
     //
-    protected $table = 'project_update';
+    protected $table = 'project_question';
 
     protected $fillable = [
-        'project_id', 'title', 'content'
+        'project_id', 'question', 'answer'
     ];
 
     public function project()

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTransactionsTable extends Migration
+class CreateProjectComment extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('project_comment', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('project_id');
             $table->unsignedInteger('user_id');
-            $table->integer('package_id');
-            $table->string('status');
-            $table->integer('amount');
-            $table->string('method');
-            $table->string('info');
+            $table->string('comment');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreateTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('project_comment');
     }
 }
