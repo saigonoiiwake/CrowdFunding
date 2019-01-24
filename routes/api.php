@@ -17,6 +17,22 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(["middleware" => "guest:api"], function () {
+    Route::post("/login", "ApiAuthController@login");
+});
+
+Route::group(["middleware" => "auth:api"], function () {
+    // Mypage
+    Route::get('account/projects', 'MyPageController@ListAllPackages');
+    Route::put('account/about/edit', 'MyPageController@EditAbout');
+    Route::put('account', 'MyPageController@EditAccount');
+    // CrowdFunding forum
+    Route::post('projects/{project_id}/comments', 'ProjectController@CreateComment');
+    Route::put('projects/{project_id}/comments/{comment_id}', 'ProjectController@EditSingleComment');
+    Route::delete('projects/{project_id}/comments/{comment_id}', 'ProjectController@DeletesSingleComment');
+    Route::post('projects/{project_id}/comments/{comment_id}/replies', 'ProjectController@CreateSingleReply');
+    Route::put('projects/{project_id}/comments/{comment_id}/replies/{reply_id}', 'ProjectController@EditSingleReply');
+});
 
 Route::get('projects/{project_id}', 'ProjectController@SingleProjectIntro');
 Route::get('projects/{project_id}/packages', 'ProjectController@ListAllPackages');
@@ -30,14 +46,5 @@ Route::get('projects/{project_id}/comments', 'ProjectController@ListAllComments'
 // To-do: admin
 Route::put('projects/{project_id}', 'ProjectController@EditSingleProject');
 
-// To-do: auth
-Route::post('projects/{project_id}/comments', 'ProjectController@CreateComment');
-Route::put('projects/{project_id}/comments/{comment_id}', 'ProjectController@EditSingleComment');
-Route::delete('projects/{project_id}/comments/{comment_id}', 'ProjectController@DeletesSingleComment');
-Route::post('projects/{project_id}/comments/{comment_id}/replies', 'ProjectController@CreateSingleReply');
-Route::put('projects/{project_id}/comments/{comment_id}/replies/{reply_id}', 'ProjectController@EditSingleReply');
 
-// To-do: auth
-Route::get('account/projects', 'MyPageController@ListAllPackages');
-Route::put('account/about', 'MyPageController@EditAbout');
-Route::put('account', 'MyPageController@EditAccount');
+
