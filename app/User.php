@@ -2,12 +2,13 @@
 
 namespace App;
 
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
@@ -18,6 +19,21 @@ class User extends Authenticatable
      */
 
     protected $table = 'user';
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
     // Disable auto increment `id` field
     public $incrementing = false;
@@ -69,12 +85,12 @@ class User extends Authenticatable
         
         return parent::create([
             'id'        => self::generateIdSafe(),
-            'name' => $param['name'],
+            'name'      => $param['nick_name'],
             'nick_name' => $param['nick_name'],
             'avatar'    => isset($param['avatar'])?  $param['avatar'] : "https://res.cloudinary.com/sabina123/image/upload/v1533396487/%E8%8F%AF%E5%A4%A7%E9%A0%AD.jpg",
             'email'     => $param['email'],
             'password'  => bcrypt($param['password']),
-            'about_me'  => $param['about_me']
+            'about_me'  => '這是我的介紹'
         ]);
     }
 
