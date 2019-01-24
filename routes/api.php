@@ -34,7 +34,9 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::put('projects/{project_id}/comments/{comment_id}/replies/{reply_id}', 'ProjectController@EditSingleReply');
 });
 
-Route::get('projects/{project_id}', 'ProjectController@SingleProjectIntro');
+Route::group(["middleware" => "cors"], function () {
+    Route::get('projects/{project_id}', 'ProjectController@SingleProjectIntro');
+});
 Route::get('projects/{project_id}/packages', 'ProjectController@ListAllPackages');
 Route::get('projects/{project_id}/content', 'ProjectController@RetrieveContent');
 Route::get('projects/{project_id}/updates', 'ProjectController@ListAllUpdates');
