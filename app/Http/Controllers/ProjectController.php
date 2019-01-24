@@ -21,7 +21,7 @@ class ProjectController extends Controller
 
         $project = Project::findOrFail($project_id);
 
-        $project_current_fund = 1;
+        $project_current_fund = 0;
 
         foreach ($project->packages as $package)
         {
@@ -29,9 +29,8 @@ class ProjectController extends Controller
         }
 
         $data = json_decode($project, true);
-        $arr_item['project_current_fund'] = $project_current_fund;
-        array_push( $data, $arr_item );
-        
+        $data['project_current_fund'] = $project_current_fund;
+
         return response()->json([
             'status' => 'success',
             'data' => $data
@@ -97,7 +96,7 @@ class ProjectController extends Controller
         foreach ($project->comments as $comment)
         {
             $arry = json_decode($comment, true);
-            array_push( $arry, $comment->replies );
+            $arry['replies'] = $comment->replies;
             array_push( $data, $arry );
         }
 
