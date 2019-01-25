@@ -106,6 +106,11 @@ class ProjectController extends Controller
         {
             $arry = json_decode($comment, true);
             $arry['replies'] = $comment->replies;
+            foreach ($comment->replies as $reply)
+            {
+                $replier = $reply->speaker;
+            }
+            $arry['commenter'] = $comment->speaker;
             array_push( $data, $arry );
         }
 
