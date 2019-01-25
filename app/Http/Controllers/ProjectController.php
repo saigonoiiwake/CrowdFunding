@@ -11,6 +11,7 @@ use App\ProjectCommentReply;
 use App\ProjectOwner;
 use App\ProjectPackage;
 use App\ProjectUpdate;
+use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
 {  
@@ -56,10 +57,18 @@ class ProjectController extends Controller
             'owners' => 'required|integer',
             'video_url' => 'required|active_url',
             'funding_target' => 'required|integer'
-          ]);    
+        ]);    
+        
+        DB::beginTransaction();
+        try {
+            $project = Project::findOrFail($project_id);
+            $project->update($request->all());
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
 
-        $project = Project::findOrFail($project_id);
-        $project->update($request->all());
 
         return response()->json([
             'status' => 'success',
@@ -129,9 +138,21 @@ class ProjectController extends Controller
             'user_id' => 'required|integer',
             'project_id' => 'required|integer',
             'comment' => 'required'
-          ]);    
+          ]);
+        
+        DB::beginTransaction();
+        try {
+            ProjectComment::create($request->all());
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
 
-        return ProjectComment::create($request->all());
+        return response()->json([
+            'status' => 'success',
+            'data' => null
+        ]);
 
     }
 
@@ -141,10 +162,18 @@ class ProjectController extends Controller
 
         $this->validate($request, [
             'comment' => 'required'
-          ]);    
-
-        $comment = ProjectComment::findOrFail($comment_id);
-        $comment->update($request->all());
+          ]);
+        
+        DB::beginTransaction();
+        try {
+            $comment = ProjectComment::findOrFail($comment_id);
+            $comment->update($request->all());
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+        
 
         return response()->json([
             'status' => 'success',
@@ -157,8 +186,15 @@ class ProjectController extends Controller
     {
         // 10-crowdfunding-sec4 
 
-        $comment = ProjectComment::findOrFail($comment_id);
-        $comment->delete();
+        DB::beginTransaction();
+        try {
+            $comment = ProjectComment::findOrFail($comment_id);
+            $comment->delete();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
 
         return response()->json([
             'status' => 'success',
@@ -175,9 +211,21 @@ class ProjectController extends Controller
             'user_id' => 'required|integer',
             'comment_id' => 'required|integer',
             'reply' => 'required'
-          ]);    
+        ]);
+        
+        DB::beginTransaction();
+        try {
+            ProjectCommentReply::create($request->all());
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
 
-        return ProjectCommentReply::create($request->all());
+        return response()->json([
+            'status' => 'success',
+            'data' => null
+        ]);
 
     }
 
@@ -187,10 +235,17 @@ class ProjectController extends Controller
 
         $this->validate($request, [
             'reply' => 'required'
-          ]);    
+        ]);
 
-        $reply = ProjectCommentReply::findOrFail($reply_id);
-        $reply->update($request->all());
+        DB::beginTransaction();
+        try {
+            $reply = ProjectCommentReply::findOrFail($reply_id);
+            $reply->update($request->all());
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
 
         return response()->json([
             'status' => 'success',
