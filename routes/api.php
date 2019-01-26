@@ -32,7 +32,12 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::delete('projects/{project_id}/comments/{comment_id}', 'ProjectController@DeletesSingleComment');
     Route::post('projects/{project_id}/comments/{comment_id}/replies', 'ProjectController@CreateSingleReply');
     Route::put('projects/{project_id}/comments/{comment_id}/replies/{reply_id}', 'ProjectController@EditSingleReply');
+    // Spgateway
+    Route::post('/projects/{project_id}/spgcheckout/packages/{package_id}', 'SPGController@pay');
 });
+
+Route::post('/spg/return', 'SPGController@return');
+Route::post('/spg/notify', 'SPGController@notify');
 
 Route::get('projects/{project_id}', 'ProjectController@SingleProjectIntro');
 Route::get('projects/{project_id}/packages', 'ProjectController@ListAllPackages');

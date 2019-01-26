@@ -10,6 +10,6 @@ class ProjectEnroll extends Model
     protected $table = 'project_enroll';
 
     protected $fillable = [
-        'user_id', 'project_id', 'package_id'
+        'user_id', 'package_id'
     ];
 }
