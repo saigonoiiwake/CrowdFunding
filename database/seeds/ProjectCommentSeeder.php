@@ -11,6 +11,6 @@ class ProjectCommentSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\ProjectComment::class, 100)->create();
+        factory(App\ProjectComment::class, 3)->create();
     }
 }
