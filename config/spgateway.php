@@ -11,9 +11,9 @@ return [
     |
      */
     'mpg' => [
-        'MerchantID' => env('SPGATEWAY_MERCHANT_ID', 'MS15219208'),
-        'HashKey' => env('SPGATEWAY_HASH_KEY', 'U3AJeIH98VGzEGKPGWBg0h8UGAIDJXX6'),
-        'HashIV' => env('SPGATEWAY_HASH_IV', 'xrVbxwrMzZowwOzN'),
+        'MerchantID' => env('SPGATEWAY_MERCHANT_ID', 'MS3117631225'),
+        'HashKey' => env('SPGATEWAY_HASH_KEY', 'fObIEsx4fd4YDDRN2RRZAUHhV6W1k7nj'),
+        'HashIV' => env('SPGATEWAY_HASH_IV', 'NmAfpRB1jNUzjc5Z'),
         'ReturnURL' => env('SPGATEWAY_RETURN_URL', 'http://127.0.0.1'),
         'NotifyURL' => env('SPGATEWAY_NOTIFY_URL', 'http://127.0.0.1'),
     ],
@@ -42,6 +42,6 @@ return [
     'receipt' => [
         'HashKey' => env('SPGATEWAY_RECEIPT_KEY'),
         'HashIV' => env('SPGATEWAY_RECEIPT_IV'),
-        'MerchantID' => env('SPGATEWAY_RECEIPT_MERCHANT_ID', 'MS15219208'),
+        'MerchantID' => env('SPGATEWAY_RECEIPT_MERCHANT_ID', 'MS3117631225'),
     ],
 ];

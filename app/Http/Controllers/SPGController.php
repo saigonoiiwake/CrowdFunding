@@ -10,24 +10,25 @@ use App\ProjectPackage;
 use App\User;
 use Mockery\Exception;
 use Illuminate\Support\Facades\DB;
-use MPG;
+use LeoChien\Spgateway\Facades\MPG;
 
 class SPGController extends Controller
 {
-    private $serverUrl;
-    private $testServerIP = "13.231.184.188";
+    private $serverUrl = 'http://seeedu.test' ;
+    //private $testServerIP = "13.231.184.188";
     
-    public function __construct()
-    {
-        if (env('APP_ENV') === 'production') {
-            $this->serverUrl = 'https://seeedu.org';
-        }   else {
-            $this->serverUrl = 'http://' . $this->testServerIP;
-        }   
-    }
+    // public function __construct()
+    // {
+    //     if (env('APP_ENV') === 'production') {
+    //         $this->serverUrl = 'http://' . $this->testServerIP;
+    //     }   else {
+    //         $this->serverUrl = 'http://' . $this->testServerIP;
+    //     }   
+    // }
     
     public function pay(Request $request, $project_id, $package_id )
     {
+        
         $package = ProjectPackage::findOrFail($package_id);
         $uid = auth()->user()->id;
        
@@ -52,9 +53,23 @@ class SPGController extends Controller
         // If someday we rollback or use a new table, row ids let's said begin from 0 will be already exist in SPGateway system and won't be accept anymore.
         // It already happened during testing, cause I connect to different DB after deploy to aws.
         // So I use $transaction->created_at . "_" . $transaction->id as MerchantOrderNo now to ensure that won't happen in the future.
+        $MerchantOrderNo = date("YmdHis", strtotime($transaction->created_at)) . "_" . $transaction->id;
+
+        $mer_array = array(
+            'MerchantID' => 'MS3117631225',
+            'TimeStamp' => time(),
+            'MerchantOrderNo'=>$MerchantOrderNo,
+            'Amt' => $package->price,
+        );
+        
+        ksort($mer_array);
+        $check_merstr = http_build_query($mer_array);
+        $CheckValue_str = "HashKey=fObIEsx4fd4YDDRN2RRZAUHhV6W1k7nj&$check_merstr&HashIV=NmAfpRB1jNUzjc5Z";
+        $CheckValue = strtoupper(hash("sha256", $CheckValue_str));
+        
         $params = array(
-            'MerchantOrderNo' => date("YmdHis", strtotime($transaction->created_at)) . "_" . $transaction->id,  
-            'OrderComment' => $package_id, 
+            'MerchantOrderNo' => $MerchantOrderNo,  
+            'OrderComment' => $CheckValue,
             'ReturnURL' => $this->serverUrl . '/spg/return',
             'NotifyURL' => $this->serverUrl . '/spg/notify'
         );
@@ -67,6 +82,23 @@ class SPGController extends Controller
         );
 
         return $order->send();
+        //return $order->getPostData();
+        //return $order->getPostDataEncrypted();
+
+        
+        
+
+        // // 產生智付通訂單資料
+        // $order = MPG::generate(
+        //     100,
+        //     'leo@hourmasters.com',
+        //     '測試商品'
+        // );
+
+        // // $order的 getPostData() 及 getPostDataEncrypted() 會回傳包含即將傳送到智付通的表單資料，可在此時紀錄log
+
+        // // 前台送出表單到智付通
+        // return $order->send();
     }
 
     // Spgateway payment NotifyURL callback
