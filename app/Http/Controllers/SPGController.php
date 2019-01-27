@@ -10,11 +10,11 @@ use App\ProjectPackage;
 use App\User;
 use Mockery\Exception;
 use Illuminate\Support\Facades\DB;
-use LeoChien\Spgateway\Facades\MPG;
+use MPG;
 
 class SPGController extends Controller
 {
-    private $serverUrl = 'http://seeedu.test' ;
+    private $serverUrl = 'https://f1d88170.ngrok.io' ;
     //private $testServerIP = "13.231.184.188";
     
     // public function __construct()
@@ -26,7 +26,7 @@ class SPGController extends Controller
     //     }   
     // }
     
-    public function pay(Request $request, $project_id, $package_id )
+    public function pay(Request $request, $project_id, $package_id)
     {
         
         $package = ProjectPackage::findOrFail($package_id);
@@ -39,7 +39,7 @@ class SPGController extends Controller
                 'user_id' => $uid,
                 'package_id' => $package->id,
                 'status' => Transaction::STATUS_PENDING,
-                'amount' => 1,
+                'amount' => $package->price,
                 'method' => 'spgateway',
                 'info' => 'pay',
             ]);
@@ -56,22 +56,17 @@ class SPGController extends Controller
         $MerchantOrderNo = date("YmdHis", strtotime($transaction->created_at)) . "_" . $transaction->id;
 
         $mer_array = array(
-            'MerchantID' => 'MS3117631225',
+            'MerchantID' => 'MS15718433',
             'TimeStamp' => time(),
             'MerchantOrderNo'=>$MerchantOrderNo,
             'Amt' => $package->price,
         );
         
-        ksort($mer_array);
-        $check_merstr = http_build_query($mer_array);
-        $CheckValue_str = "HashKey=fObIEsx4fd4YDDRN2RRZAUHhV6W1k7nj&$check_merstr&HashIV=NmAfpRB1jNUzjc5Z";
-        $CheckValue = strtoupper(hash("sha256", $CheckValue_str));
-        
         $params = array(
             'MerchantOrderNo' => $MerchantOrderNo,  
-            'OrderComment' => $CheckValue,
-            'ReturnURL' => $this->serverUrl . '/spg/return',
-            'NotifyURL' => $this->serverUrl . '/spg/notify'
+            // 'OrderComment' => $CheckValue,
+            'ReturnURL' => $this->serverUrl . 'api/spg/return',
+            'NotifyURL' => $this->serverUrl . 'api/spg/notify'
         );
     
         $order = MPG::generate(
@@ -85,19 +80,16 @@ class SPGController extends Controller
         //return $order->getPostData();
         //return $order->getPostDataEncrypted();
 
-        
-        
-
-        // // 產生智付通訂單資料
+        // 產生智付通訂單資料
         // $order = MPG::generate(
         //     100,
         //     'leo@hourmasters.com',
         //     '測試商品'
         // );
 
-        // // $order的 getPostData() 及 getPostDataEncrypted() 會回傳包含即將傳送到智付通的表單資料，可在此時紀錄log
+        // $order的 getPostData() 及 getPostDataEncrypted() 會回傳包含即將傳送到智付通的表單資料，可在此時紀錄log
 
-        // // 前台送出表單到智付通
+        // 前台送出表單到智付通
         // return $order->send();
     }
 
