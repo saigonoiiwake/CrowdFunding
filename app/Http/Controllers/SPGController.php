@@ -28,7 +28,7 @@ class SPGController extends Controller
     
     public function pay(Request $request, $project_id, $package_id )
     {
-        
+    
         $package = ProjectPackage::findOrFail($package_id);
         $uid = auth()->user()->id;
        
@@ -82,23 +82,7 @@ class SPGController extends Controller
         );
 
         return $order->send();
-        //return $order->getPostData();
-        //return $order->getPostDataEncrypted();
-
         
-        
-
-        // // 產生智付通訂單資料
-        // $order = MPG::generate(
-        //     100,
-        //     'leo@hourmasters.com',
-        //     '測試商品'
-        // );
-
-        // // $order的 getPostData() 及 getPostDataEncrypted() 會回傳包含即將傳送到智付通的表單資料，可在此時紀錄log
-
-        // // 前台送出表單到智付通
-        // return $order->send();
     }
 
     // Spgateway payment NotifyURL callback
