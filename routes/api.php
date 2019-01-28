@@ -39,10 +39,14 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::post('/projects/{project_id}/spgcheckout/packages/{package_id}', 'SPGController@pay');
 });
 
+
 Route::post('/spg/return', 'SPGController@return');
 Route::post('/spg/notify', 'SPGController@notify');
 
-Route::get('projects/{project_id}', 'ProjectController@SingleProjectIntro');
+Route::group(["middleware" => "cors"], function () {
+    Route::get('projects/{project_id}', 'ProjectController@SingleProjectIntro');
+});
+
 Route::get('projects/{project_id}/packages', 'ProjectController@ListAllPackages');
 Route::get('projects/{project_id}/content', 'ProjectController@RetrieveContent');
 Route::get('projects/{project_id}/updates', 'ProjectController@ListAllUpdates');
