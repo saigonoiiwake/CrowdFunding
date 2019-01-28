@@ -33,14 +33,14 @@ class ApiAuthController extends Controller
         ]);
     }
 
-    public function redirectToProvider_FB()
+    public function redirectToProvider($provider)
     {
-       return Socialite::driver('facebook')->stateless()->redirect();
+       return Socialite::driver($provider)->stateless()->redirect();
     }
 
-   public function handleProviderCallback_FB()
+   public function handleProviderCallback($provider)
     {
-        $userSocial = Socialite::driver('facebook')->stateless()->user();
+        $userSocial = Socialite::driver($provider)->stateless()->user();
         $token = $userSocial->token;
         $refreshToken = $userSocial->refreshToken; // not always provided
         $expiresIn = $userSocial->expiresIn;

@@ -21,8 +21,12 @@ Route::group(["middleware" => "guest:api"], function () {
     Route::post("/login", "ApiAuthController@login");
 });
 
-Route::get('login/facebook', 'ApiAuthController@redirectToProvider_FB');
-Route::get('login/facebook/callback', 'ApiAuthController@handleProviderCallback_FB');
+Route::get('login/{provider}', 'ApiAuthController@redirectToProvider');
+Route::get('login/{provider}/callback', 'ApiAuthController@handleProviderCallback');
+
+
+
+
 
 Route::group(["middleware" => "auth:api"], function () {
     // Mypage
