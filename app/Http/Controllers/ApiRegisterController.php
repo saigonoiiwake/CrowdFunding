@@ -25,7 +25,7 @@ class ApiRegisterController extends Controller
             $data = [
                 'nick_name' => $request->nick_name,
                 'email'     => $request->email,
-                'password'  => bcrypt($request->password)
+                'password'  => $request->password
             ];
            
             User::newUser($data);
@@ -33,6 +33,7 @@ class ApiRegisterController extends Controller
             \Auth::login($newUser);
             DB::commit();
             $jwtoken = JWTAuth::fromUser($newUser);
+
 
             return $this->respondWithToken($jwtoken);
         }
