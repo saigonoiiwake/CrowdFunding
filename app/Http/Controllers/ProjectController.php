@@ -135,14 +135,17 @@ class ProjectController extends Controller
         // 10-crowdfunding-sec4 
         
         $this->validate($request, [
-            'user_id' => 'required|integer',
-            'project_id' => 'required|integer',
             'comment' => 'required'
           ]);
         
         DB::beginTransaction();
         try {
-            ProjectComment::create($request->all());
+            $new_comment = new ProjectComment;
+            $new_comment->user_id = auth()->user()->id;
+            $new_comment->project_id = $project_id;
+            $new_comment->comment = $request->comment;
+            $new_comment->save();
+            //ProjectComment::create($request->all());
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -208,14 +211,16 @@ class ProjectController extends Controller
         // 10-crowdfunding-sec4 
 
         $this->validate($request, [
-            'user_id' => 'required|integer',
-            'comment_id' => 'required|integer',
             'reply' => 'required'
         ]);
         
         DB::beginTransaction();
         try {
-            ProjectCommentReply::create($request->all());
+            $new_reply = new ProjectCommentReply;
+            $new_reply->user_id = auth()->user()->id;
+            $new_reply->comment_id = $comment_id;
+            $new_reply->reply = $request->reply;
+            $new_reply->save();
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();

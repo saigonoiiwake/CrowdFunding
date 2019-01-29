@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Socialite;
+use JWTAuth;
+use App\User;
 
 class ApiAuthController extends Controller
 {
@@ -48,22 +52,23 @@ class ApiAuthController extends Controller
                 'nick_name' => $userSocial->getName(),
                 'email'     => $userSocial->getEmail(),
                 'avatar'    => $userSocial->getAvatar(),
-                'password'  => bcrypt(123456),
+                'password'  => bcrypt('secret')
             ];
 
             $findUser = User::where('email', $userSocial->getEmail())->first();
 
             if ($findUser) {
                 \Auth::login($findUser);
+                $jwtoken = JWTAuth::fromUser($findUser);
             } else {
                 User::newUser($data);
                 $newUser = User::where('email', $userSocial->getEmail())->first();
                 \Auth::login($newUser);
                 DB::commit();
+                $jwtoken = JWTAuth::fromUser($newUser);
             }
 
-
-            return $this->respondWithToken($token);
+            return $this->respondWithToken($jwtoken);
 
         } catch (\Exception $e) {
             DB::rollback();
