@@ -9,9 +9,23 @@ use Socialite;
 use JWTAuth;
 use App\User;
 
+
+
 class ApiAuthController extends Controller
 {
-    //
+   
+
+    // jwt
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => 'bearer ' . $token,
+            'token_type'   => 'bearer',
+            'expires_in'   => auth("api")->factory()->getTTL() * 60,
+        ]);
+    }
+
+    // API login
     function login()
     {
         $credentials = request(['email', 'password']);
@@ -23,21 +37,13 @@ class ApiAuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'access_token' => 'bearer ' . $token,
-            'token_type'   => 'bearer',
-            'expires_in'   => auth("api")->factory()->getTTL() * 60,
-        ]);
-    }
-
+    // OAuth Login
     public function redirectToProvider($provider)
     {
         return Socialite::driver($provider)->stateless()->redirect();
     }
 
+    // OAuth callback
     public function handleProviderCallback($provider)
     {
         $userSocial = Socialite::driver($provider)->stateless()->user();

@@ -21,6 +21,7 @@ Route::group(["middleware" => "guest:api"], function () {
     Route::post("/login", "ApiAuthController@login");
 });
 
+Route::post("/register", "ApiRegisterController@register");
 Route::get('login/{provider}', 'ApiAuthController@redirectToProvider');
 Route::get('login/{provider}/callback', 'ApiAuthController@handleProviderCallback');
 
