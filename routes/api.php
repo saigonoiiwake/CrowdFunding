@@ -21,6 +21,10 @@ Route::group(["middleware" => "guest:api"], function () {
     Route::post("/login", "ApiAuthController@login");
 });
 
+Route::post("/register", "ApiRegisterController@register");
+Route::get('login/{provider}', 'ApiAuthController@redirectToProvider');
+Route::get('login/{provider}/callback', 'ApiAuthController@handleProviderCallback');
+
 Route::group(["middleware" => "auth:api"], function () {
     // Mypage
     Route::get('account/projects', 'MyPageController@ListAllPackages');
@@ -36,10 +40,13 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::post('/projects/{project_id}/spgcheckout/packages/{package_id}', 'SPGController@pay');
 });
 
+
 Route::post('/spg/return', 'SPGController@return');
 Route::post('/spg/notify', 'SPGController@notify');
+Route::group(["middleware" => "cors"], function () {
+    Route::get('projects/{project_id}', 'ProjectController@SingleProjectIntro');
+});
 
-Route::get('projects/{project_id}', 'ProjectController@SingleProjectIntro');
 Route::get('projects/{project_id}/packages', 'ProjectController@ListAllPackages');
 Route::get('projects/{project_id}/content', 'ProjectController@RetrieveContent');
 Route::get('projects/{project_id}/updates', 'ProjectController@ListAllUpdates');
