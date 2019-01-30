@@ -21,9 +21,7 @@ Route::group(["middleware" => "guest:api"], function () {
     Route::post("/login", "ApiAuthController@login");
 });
 
-Route::post("/register", "ApiRegisterController@register");
-Route::get('login/{provider}', 'ApiAuthController@redirectToProvider');
-Route::get('login/{provider}/callback', 'ApiAuthController@handleProviderCallback');
+
 
 Route::group(["middleware" => "auth:api"], function () {
     // Mypage
@@ -44,6 +42,9 @@ Route::group(["middleware" => "auth:api"], function () {
 Route::post('/spg/return', 'SPGController@return');
 Route::post('/spg/notify', 'SPGController@notify');
 Route::group(["middleware" => "cors"], function () {
+    Route::post("/register", "ApiRegisterController@register");
+    Route::get('login/{provider}', 'ApiAuthController@redirectToProvider');
+    Route::get('login/{provider}/callback', 'ApiAuthController@handleProviderCallback');
     Route::get('projects/{project_id}', 'ProjectController@SingleProjectIntro');
 });
 
