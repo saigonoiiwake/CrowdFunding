@@ -14,7 +14,7 @@ use MPG;
 
 class SPGController extends Controller
 {
-    private $serverUrl = 'https://f1d88170.ngrok.io' ;
+    private $serverUrl = 'https://db540088.ngrok.io' ;
     //private $testServerIP = "13.231.184.188";
     
     // public function __construct()
@@ -55,18 +55,18 @@ class SPGController extends Controller
         // So I use $transaction->created_at . "_" . $transaction->id as MerchantOrderNo now to ensure that won't happen in the future.
         $MerchantOrderNo = date("YmdHis", strtotime($transaction->created_at)) . "_" . $transaction->id;
 
-        $mer_array = array(
-            'MerchantID' => 'MS15718433',
-            'TimeStamp' => time(),
-            'MerchantOrderNo'=>$MerchantOrderNo,
-            'Amt' => $package->price,
-        );
+        // $mer_array = array(
+        //     'MerchantID' => 'MS3117631225',
+        //     'TimeStamp' => time(),
+        //     'MerchantOrderNo'=>$MerchantOrderNo,
+        //     'Amt' => $package->price,
+        // );
         
         $params = array(
             'MerchantOrderNo' => $MerchantOrderNo,  
             // 'OrderComment' => $CheckValue,
-            'ReturnURL' => $this->serverUrl . 'api/spg/return',
-            'NotifyURL' => $this->serverUrl . 'api/spg/notify'
+            'ReturnURL' => $this->serverUrl . '/api/spg/return',
+            'NotifyURL' => $this->serverUrl . '/api/spg/notify'
         );
     
         $order = MPG::generate(
@@ -78,19 +78,6 @@ class SPGController extends Controller
 
         return $order->send();
         //return $order->getPostData();
-        //return $order->getPostDataEncrypted();
-
-        // 產生智付通訂單資料
-        // $order = MPG::generate(
-        //     100,
-        //     'leo@hourmasters.com',
-        //     '測試商品'
-        // );
-
-        // $order的 getPostData() 及 getPostDataEncrypted() 會回傳包含即將傳送到智付通的表單資料，可在此時紀錄log
-
-        // 前台送出表單到智付通
-        // return $order->send();
     }
 
     // Spgateway payment NotifyURL callback
