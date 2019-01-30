@@ -19,7 +19,7 @@ class SPGController extends Controller
     
     // public function __construct()
     // {
-    //     if (env('APP_ENV') === 'production') {
+    //     if (env('APP_ENV') === 'production') { 
     //         $this->serverUrl = 'http://' . $this->testServerIP;
     //     }   else {
     //         $this->serverUrl = 'http://' . $this->testServerIP;
@@ -54,13 +54,6 @@ class SPGController extends Controller
         // It already happened during testing, cause I connect to different DB after deploy to aws.
         // So I use $transaction->created_at . "_" . $transaction->id as MerchantOrderNo now to ensure that won't happen in the future.
         $MerchantOrderNo = date("YmdHis", strtotime($transaction->created_at)) . "_" . $transaction->id;
-
-        // $mer_array = array(
-        //     'MerchantID' => 'MS3117631225',
-        //     'TimeStamp' => time(),
-        //     'MerchantOrderNo'=>$MerchantOrderNo,
-        //     'Amt' => $package->price,
-        // );
         
         $params = array(
             'MerchantOrderNo' => $MerchantOrderNo,  
