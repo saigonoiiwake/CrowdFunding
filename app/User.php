@@ -7,10 +7,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
+    use AuthenticableTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -88,7 +90,7 @@ class User extends Authenticatable implements JWTSubject
             'name'      => $param['nick_name'],
             'nick_name' => $param['nick_name'],
             'avatar'    => isset($param['avatar'])?  $param['avatar'] : "https://res.cloudinary.com/sabina123/image/upload/v1533396487/%E8%8F%AF%E5%A4%A7%E9%A0%AD.jpg",
-            'email'     => $param['email'],
+            'email'     => $param['email']? $param['email'] : "null@gmail.com",
             'password'  => bcrypt($param['password']),
             'about_me'  => '這是我的介紹'
         ]);

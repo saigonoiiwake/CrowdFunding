@@ -35,8 +35,9 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::post('projects/{project_id}/comments/{comment_id}/replies', 'ProjectController@CreateSingleReply');
     Route::put('projects/{project_id}/comments/{comment_id}/replies/{reply_id}', 'ProjectController@EditSingleReply');
     // Spgateway
-    Route::post('/projects/{project_id}/spgcheckout/packages/{package_id}', 'SPGController@pay');
+   
 });
+
 
 
 Route::post('/spg/return', 'SPGController@return');
@@ -46,6 +47,7 @@ Route::group(["middleware" => "cors"], function () {
     Route::get('login/{provider}', 'ApiAuthController@redirectToProvider');
     Route::get('login/{provider}/callback', 'ApiAuthController@handleProviderCallback');
     Route::get('projects/{project_id}', 'ProjectController@SingleProjectIntro');
+    Route::post('/projects/{project_id}/spgcheckout/packages/{package_id}', 'SPGController@pay');
 });
 
 Route::get('projects/{project_id}/packages', 'ProjectController@ListAllPackages');

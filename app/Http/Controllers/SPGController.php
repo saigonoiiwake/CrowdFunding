@@ -30,13 +30,16 @@ class SPGController extends Controller
     {
         
         $package = ProjectPackage::findOrFail($package_id);
-        $uid = auth()->user()->id;
+        //$uid = auth()->user()->id;
+        $test_user = User::findOrFail('640819232')->first();
+       
        
         // Store transaction data into Table:transaction
         DB::beginTransaction();
         try {
             $transaction = Transaction::create([
-                'user_id' => $uid,
+                //'user_id' => $uid,
+                'user_id' => $test_user->id,
                 'package_id' => $package->id,
                 'status' => Transaction::STATUS_PENDING,
                 'amount' => $package->price,
@@ -64,12 +67,15 @@ class SPGController extends Controller
     
         $order = MPG::generate(
             $package->price,
-            auth()->user()->email,
+            //auth()->user()->email,
+            $test_user->email,
             $package->title,
             $params
         );
 
-        return $order->send();
+        
+        return $order->getPostDataEncrypted();
+        //return $order->send();
         //return $order->getPostData();
     }
 
@@ -143,10 +149,17 @@ class SPGController extends Controller
         
         if($payment_result == 'SUCCESS')
         { 
-            return redirect()->back();
+            return response()->json([
+                'status' => 'success',
+                'data' => 'payment success'
+            ]);
         }else{
             //Session::flash('warning', '付款失敗，請至信箱確認');
-            return redirect()->back();
+            //return redirect()->back();
+            return response()->json([
+                'status' => 'fail or pending',
+                'data' => $payment_result
+            ]);
         }
     }
     
