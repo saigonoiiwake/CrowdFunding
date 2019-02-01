@@ -40,7 +40,7 @@ class ApiAuthController extends Controller
     // OAuth Login
     public function redirectToProvider($provider)
     {
-        return Socialite::driver($provider)->stateless()->redirect();
+        return Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
     }
 
     // OAuth callback

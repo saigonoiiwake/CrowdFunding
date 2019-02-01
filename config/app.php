@@ -161,6 +161,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        LeoChien\Spgateway\SpgatewayServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -223,7 +224,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'MPG' => LeoChien\Spgateway\Facades\MPG::class,
+        'Receipt' => LeoChien\Spgateway\Facades\Receipt::class,
+        'Refund' => LeoChien\Spgateway\Facades\Refund::class,
+        'Transfer' => LeoChien\Spgateway\Facades\Transfer::class,
     ],
 
 ];

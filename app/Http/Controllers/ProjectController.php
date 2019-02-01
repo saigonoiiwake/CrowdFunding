@@ -34,10 +34,10 @@ class ProjectController extends Controller
             $sponsor_sum += $package->sponsor_count;
         }
 
-        $project_current_fund_format = number_format($project_current_fund);
+        //$project_current_fund_format = number_format($project_current_fund);
 
         $data = json_decode($project, true);
-        $data['project_current_fund'] = $project_current_fund_format;
+        $data['project_current_fund'] = $project_current_fund;
         $data['sponsor_sum'] = $sponsor_sum;
         $data['project_owner'] = $project_owner;
 

@@ -4,7 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5c2f4310e870ee9f79816bc3f384b44",
+
+    "content-hash": "7ace362ce4ef754c3fd5c868b94a1ad1",
+
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1228,6 +1230,57 @@
                 "twitter"
             ],
             "time": "2016-08-17T00:36:58+00:00"
+        },
+        {
+            "name": "leochien/laravel-spgateway",
+            "version": "1.1.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/s950329/laravel-spgateway.git",
+                "reference": "99f4e64d9f2bb2b01307a364ca1874fe77926a44"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/s950329/laravel-spgateway/zipball/99f4e64d9f2bb2b01307a364ca1874fe77926a44",
+                "reference": "99f4e64d9f2bb2b01307a364ca1874fe77926a44",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.0",
+                "php": ">=7"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LeoChien\\Spgateway\\SpgatewayServiceProvider"
+                    ]
+                },
+                "aliases": {
+                    "Spgateway": "LeoChien\\Spgateway\\Facades"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LeoChien\\Spgateway\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "LeoChien",
+                    "email": "leo@hourmasters.com"
+                }
+            ],
+            "description": "spgateway library for laravel",
+            "keywords": [
+                "library",
+                "spgateway"
+            ],
+            "time": "2018-11-28T10:22:36+00:00"
         },
         {
             "name": "monolog/monolog",
