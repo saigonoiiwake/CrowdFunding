@@ -7,7 +7,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Auth\Authenticatable as AuthenticableTrait;
+use Mail;
+
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -81,9 +82,10 @@ class User extends Authenticatable implements JWTSubject
 
     public static function newUser($param)
     {
-        // Mail::to($param['email'])
-        //       ->bcc('b816132@gmail.com')
-        //       ->send(new \App\Mail\RegisterSuccessful());
+         Mail::to($param['email'])
+                    ->send(new \App\Mail\RegisterConfirmation());
+               //->bcc('service@seeedu31.com')
+               
         
         return parent::create([
             'id'        => self::generateIdSafe(),
